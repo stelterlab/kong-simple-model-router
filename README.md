@@ -45,7 +45,7 @@ This setup is intended for testing on a single machine. So adjust the kong/kong.
 
 ```
 
-I choose this models, because they are small. Replace "smol3-3b" with model alias / served model name. And 192.168.0.123:8101 with your host IP and port on which vLLM is running.
+I choose this models, because they are small. Replace "smol3-3b" with model alias / served model name. And replace 192.168.0.123:8101 with your host IP and port on which vLLM is running.
 
 NOTE: When you run all vLLM instances and your gateway on the same machine (eg. DGX Spark or a beast with multiple RTX PRO 6000) you can not use 127.0.0.1 as routing target, because the Kong is running in a different container (and network).
 
