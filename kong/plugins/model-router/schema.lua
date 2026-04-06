@@ -1,7 +1,7 @@
 local typedefs = require "kong.db.schema.typedefs"
 
 return {
-  name = "vllm-router",
+  name = "model-router",
   fields = {
     { config = {
         type = "record",

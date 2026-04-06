@@ -8,17 +8,15 @@ services:
         paths:
           - /v1
         plugins:
-          - name: vllm-router
+          - name: model-router
             config:
               paths:
                 - /v1/chat/completions
                 - /v1/chat/completions/batch
                 - /v1/completions
-                - /tokenize
-                - /detokenize
               model_routing:
-                "smol3-3b": "127.0.0.1:8101"
-                "qwen35-tiny": "127.0.0.1:8102"
+                "smol3-3b": "192.168.0.123:8101"
+                "qwen35-tiny": "192.168.0.123:8102"
               model_tokens:
                 "smol3-3b": "sk-secret"
                 "qwen35-tiny": "sk-secret"

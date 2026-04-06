@@ -1,8 +1,6 @@
-kong-vllm-router-plugin/pure-router/kong/plugins/vllm-router/handler.lua
-```lua
 local cjson = require "cjson.safe"
 
-local VllmRouter = {
+local ModelRouter = {
   PRIORITY = 1000, -- Runs early in the access phase
   VERSION = "1.0.0",
 }
@@ -25,7 +23,7 @@ local function integer_or_nil(value)
   return nil
 end
 
-function VllmRouter:access(conf)
+function ModelRouter:access(conf)
   -- EMULATE /v1/models ENDPOINT
   local path = kong.request.get_path()
   if path:match("/v1/models$") then
@@ -93,4 +91,4 @@ function VllmRouter:access(conf)
   end
 end
 
-return VllmRouter
+return ModelRouter
