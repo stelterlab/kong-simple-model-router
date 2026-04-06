@@ -1,0 +1,42 @@
+services:
+  vllm1:
+    image: vllm/vllm-openai:v0.19.0-cu130
+    container_name: vllm1
+    env_file: .env
+    command: --model HuggingFaceTB/SmolLM3-3B --served-model-name smol3-3b --port 8101 --gpu-memory-utilization 0.5 --max-model-len 4096 --max-num-seqs 8 --kv-cache-dtype fp8 --api-key ${API_KEY}
+    ports:
+      - 8101:8101
+    volumes:
+      - $HOME/.cache/huggingface/hub:/root/.cache/huggingface/hub
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+    networks:
+      - vllm-service
+
+  vllm2:
+    image: vllm/vllm-openai:v0.19.0-cu130
+    container_name: vllm2
+    command: --model Qwen/Qwen3.5-0.8B --port 8102 --served-model-name qwen35-tiny --gpu-memory-utilization 0.4 --max-model-len 4096 --max-num-seqs 8 --kv-cache-dtype fp8 --api-key ${API_KEY}
+    ports:
+      - 8102:8102
+    env_file: .env
+    volumes:
+      - $HOME/.cache/huggingface/hub:/root/.cache/huggingface/hub
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+    networks:
+      - vllm-service
+
+networks:
+  vllm-service:
+    name: vllm-service-net

@@ -1,0 +1,25 @@
+services:
+  kong:
+    image: kong:3.9-ubuntu
+    container_name: kong
+    environment:
+      - KONG_DATABASE=off
+      - KONG_DECLARATIVE_CONFIG=/kong/declarative/kong.yml
+      # Tell Kong to load our custom plugin alongside the defaults
+      - KONG_PLUGINS=bundled,vllm-router
+    volumes:
+      - ./kong.yml:/kong/declarative/kong.yml
+      # Mount plugin in Kong's canonical module path: kong/plugins/vllm-router
+      - ./plugins/vllm-router:/usr/local/share/lua/5.1/kong/plugins/vllm-router
+    ports:
+      - "8000:8000"
+    ulimits:
+      nofile:
+        soft: 4096
+        hard: 8192
+    networks:
+      - vllm-router
+
+networks:
+  vllm-router:
+    name: vllm-router-net

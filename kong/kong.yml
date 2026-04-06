@@ -1,0 +1,24 @@
+_format_version: "3.0"
+
+services:
+  - name: vllm-fallback-service
+    url: http://127.0.0.1:8000 # Dummy URL, the plugin overwrites this
+    routes:
+      - name: llm-api
+        paths:
+          - /v1
+        plugins:
+          - name: vllm-router
+            config:
+              paths:
+                - /v1/chat/completions
+                - /v1/chat/completions/batch
+                - /v1/completions
+                - /tokenize
+                - /detokenize
+              model_routing:
+                "smol3-3b": "127.0.0.1:8101"
+                "qwen35-tiny": "127.0.0.1:8102"
+              model_tokens:
+                "smol3-3b": "sk-secret"
+                "qwen35-tiny": "sk-secret"
